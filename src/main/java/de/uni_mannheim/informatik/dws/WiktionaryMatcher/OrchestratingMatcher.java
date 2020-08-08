@@ -1,9 +1,13 @@
 package de.uni_mannheim.informatik.dws.WiktionaryMatcher;
 
-import de.uni_mannheim.informatik.dws.WiktionaryMatcher.complexStringMatcher.ComplexStringMatcher;
+import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.complexString.ComplexStringMatcher;
+import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.simpleString.DefaultNormalizationFunction;
+import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.simpleString.TrimNormalizationFunction;
 import de.uni_mannheim.informatik.dws.WiktionaryMatcher.notYetUsed.Arity;
-import de.uni_mannheim.informatik.dws.WiktionaryMatcher.simpleStringMatcher.SimpleStringMatcher;
-import de.uni_mannheim.informatik.dws.WiktionaryMatcher.wiktionaryMatcher.WiktionaryMatcher;
+import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.simpleString.SimpleStringMatcher;
+import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.wiktionary.WiktionaryMatcher;
+import de.uni_mannheim.informatik.dws.WiktionaryMatcher.services.OntModelServices;
+import de.uni_mannheim.informatik.dws.melt.matching_base.DataStore;
 import de.uni_mannheim.informatik.dws.melt.yet_another_alignment_api.Alignment;
 import de.uni_mannheim.informatik.dws.melt.yet_another_alignment_api.Correspondence;
 import org.apache.jena.ontology.OntModel;
@@ -21,7 +25,7 @@ public class OrchestratingMatcher extends LabelBasedMatcher {
     /**
      * Indicator whether the alignment shall be homogenous (i.e., only classes are mapped to classes, object properties
      * are mapped to object properties, and datatype properties are mapped to datatype properties).
-     * If false, the alignment might be heterogenous (e.g., classes might be mapped to datatype properties).
+     * If false, the alignment might be heterogeneous (e.g., classes might be mapped to datatype properties).
      */
     private boolean homogenousAlignment = true;
 
@@ -37,27 +41,36 @@ public class OrchestratingMatcher extends LabelBasedMatcher {
     @Override
     public Alignment match(OntModel ontology1, OntModel ontology2, Alignment alignment, Properties properties) throws Exception {
         alignment = new Alignment();
-        //System.out.println(GlobalDataStore.getOntId(ontology1));
-        //System.out.println(GlobalDataStore.getOntId(ontology2));
+
         loadLabels(ontology1, ontology2);
         LOGGER.info("Detected Language for Source Ontology: " + mostFrequentLanguage_1);
         LOGGER.info("Detected Language for Target Ontology: " + mostFrequentLanguage_2);
         if(mostFrequentLanguage_1 == mostFrequentLanguage_2) {
             LOGGER.info("Both ontologies are in the same language - run matcher in monolingual mode.");
 
-            SimpleStringMatcher smatcher = new SimpleStringMatcher();
+            // very simple matcher
+            SimpleStringMatcher vsmatcher = new SimpleStringMatcher(new TrimNormalizationFunction());
+            vsmatcher.setExplanationTextDirectMatch("The two resources have the same label. This the strongest indication of a match for this matcher. " +
+                    "A match was found on the following label: ");
+            Alignment vsAlignment = vsmatcher.match(ontology1, ontology2, alignment, properties);
+
+            // more aggressive string matcher
+            SimpleStringMatcher smatcher = new SimpleStringMatcher(new DefaultNormalizationFunction());
             Alignment sAlignment = smatcher.match(ontology1, ontology2, alignment, properties);
 
+            // bag of word matcher
             ComplexStringMatcher cmatcher = new ComplexStringMatcher();
             Alignment cAlignment = cmatcher.match(ontology1, ontology2, alignment, properties);
 
-            Alignment merged = mergeAlignments(sAlignment, cAlignment);
+            Alignment merged = mergeAlignments(vsAlignment, sAlignment);
+            merged = mergeAlignments(merged, cAlignment);
 
+            // levenshtein matcher
             LevenshteinMatcher lmatcher = new LevenshteinMatcher();
             Alignment lAlignment = lmatcher.match(ontology1, ontology2, alignment, properties);
-
             merged = mergeAlignments(merged, lAlignment);
 
+            // wiktionary matcher
             WiktionaryMatcher wikiMatcher = new WiktionaryMatcher();
             merged = wikiMatcher.match(ontology1, ontology2, merged, properties);
 

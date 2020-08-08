@@ -1,6 +1,6 @@
 package de.uni_mannheim.informatik.dws.WiktionaryMatcher.services;
 
-import de.uni_mannheim.informatik.dws.WiktionaryMatcher.wiktionaryMatcher.linking.LabelLanguageTuple;
+import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.wiktionary.linking.LabelLanguageTuple;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

@@ -1,20 +1,21 @@
 package de.uni_mannheim.informatik.dws.WiktionaryMatcher;
 
-import de.uni_mannheim.informatik.dws.WiktionaryMatcher.services.GlobalDataStore;
+import de.uni_mannheim.informatik.dws.WiktionaryMatcher.services.OntModelServices;
 import de.uni_mannheim.informatik.dws.WiktionaryMatcher.services.StringOperations;
-import de.uni_mannheim.informatik.dws.WiktionaryMatcher.wiktionaryMatcher.Language;
-import de.uni_mannheim.informatik.dws.WiktionaryMatcher.wiktionaryMatcher.UriLabelInfo;
-import de.uni_mannheim.informatik.dws.WiktionaryMatcher.wiktionaryMatcher.linking.LabelLanguageTuple;
+import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.wiktionary.Language;
+import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.wiktionary.UriLabelInfo;
+import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.wiktionary.linking.LabelLanguageTuple;
+import de.uni_mannheim.informatik.dws.melt.matching_base.DataStore;
 import de.uni_mannheim.informatik.dws.melt.matching_jena.MatcherYAAAJena;
 import de.uni_mannheim.informatik.dws.melt.yet_another_alignment_api.Alignment;
 import org.apache.jena.ontology.AnnotationProperty;
+import org.apache.jena.ontology.Individual;
 import org.apache.jena.ontology.OntModel;
 import org.apache.jena.ontology.OntResource;
-import org.apache.jena.rdf.model.Literal;
-import org.apache.jena.rdf.model.RDFNode;
-import org.apache.jena.rdf.model.ResIterator;
-import org.apache.jena.rdf.model.Resource;
+import org.apache.jena.rdf.model.*;
 import org.apache.jena.util.iterator.ExtendedIterator;
+import org.apache.jena.vocabulary.RDFS;
+import org.apache.jena.vocabulary.SKOS;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -41,7 +42,6 @@ public abstract class LabelBasedMatcher extends MatcherYAAAJena {
      * Alignment
      */
     protected Alignment alignment = new Alignment();
-
 
     /**
      * Source class URIs mapped to multiple labels.
@@ -106,14 +106,18 @@ public abstract class LabelBasedMatcher extends MatcherYAAAJena {
     /**
      * Global data store.
      */
-    protected static GlobalDataStore store = GlobalDataStore.getInstance();
+    protected static DataStore store = DataStore.getGlobal();
 
     /**
      * Indicates whether labels with 50% of numbers in their label shall be excluded.
      * Default: true
      */
-    private boolean filterNonMeaningfulLabels = true;
+    private boolean filterNonMeaningfulLabels = false;
 
+    /**
+     * This is required for the KG track.
+     */
+    private static final Property ANCHOR_TEXT_PROPERTY = ModelFactory.createDefaultModel().createProperty("http://dbkwik.webdatacommons.org/ontology/wikiPageWikiLinkText");
 
     /**
      * The usage of the extended fragment in {@link LabelBasedMatcher#getAnnotationProperties(OntResource, OntModel)}
@@ -136,8 +140,8 @@ public abstract class LabelBasedMatcher extends MatcherYAAAJena {
         ontology1 = sourceOntology;
         ontology2 = targetOntology;
 
-        String ont_1_key = GlobalDataStore.getOntId(ontology1);
-        String ont_2_key = GlobalDataStore.getOntId(ontology2);
+        String ont_1_key = OntModelServices.getOntId(ontology1);
+        String ont_2_key = OntModelServices.getOntId(ontology2);
 
         // retrieve all labels either from store or through parsing.
         if (ont_1_key != null) {
@@ -266,6 +270,7 @@ public abstract class LabelBasedMatcher extends MatcherYAAAJena {
             // anonymous node →
             return null;
         }
+
         // System.out.println(resource.getLocalName());
         HashSet<LabelLanguageTuple> result = getAnnotationPropertiesRecursionDeadLockSafe(resource, ontModel, 0);
         String localName = resource.getLocalName();
@@ -292,7 +297,7 @@ public abstract class LabelBasedMatcher extends MatcherYAAAJena {
         if(fragmentCounter.get(localName) > 15) isExcessiveFragment = true;
 
         if (filterNonMeaningfulLabels) {
-            if(!isExcessiveExtendedFragment && !fragmentExtended.equals("") && (fragmentExtended.contains("%"))){
+            if(!isExcessiveExtendedFragment && !fragmentExtended.equals("") && fragmentExtended.contains("%")){
                 // the fragmentExtended is the correct one to pick due to errors in getLocalName()
                 if(StringOperations.isMeaningfulFragment(fragmentExtended)){
                     result.add(new LabelLanguageTuple(fragmentExtended, Language.UNKNOWN));
@@ -303,7 +308,7 @@ public abstract class LabelBasedMatcher extends MatcherYAAAJena {
                 }
             }
         } else {
-            if(!isExcessiveExtendedFragment && !fragmentExtended.equals("") && (fragmentExtended.contains("%"))){
+            if(!isExcessiveExtendedFragment && !fragmentExtended.equals("") && fragmentExtended.contains("%")){
                 // the fragmentExtended is the correct one to pick due to errors in getLocalName()
                 result.add(new LabelLanguageTuple(fragmentExtended, Language.UNKNOWN));
             } else if(!isExcessiveFragment){
@@ -316,14 +321,14 @@ public abstract class LabelBasedMatcher extends MatcherYAAAJena {
 
     /**
      * Infinity loop save way to get annotation properties. Do not call this method directly but rather
-     * its wrapper ({@link ComplexStringMatcher#getAnnotationProperties(OntResource, OntModel)}).
+     * its wrapper ({@link de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.complexString.ComplexStringMatcher#getAnnotationProperties(OntResource, OntModel)}).
      *
      * @param resource       The resource for which the annotation properties shall be retrieved.
      * @param ontModel       The ontology model.
      * @param recursionDepth The depth of the recursion
      * @return A set of Strings that was retrieved.
      */
-    private HashSet<LabelLanguageTuple> getAnnotationPropertiesRecursionDeadLockSafe(OntResource resource, OntModel ontModel,
+    private HashSet<LabelLanguageTuple> getAnnotationPropertiesRecursionDeadLockSafe(Resource resource, OntModel ontModel,
                                                                                      int recursionDepth) {
         recursionDepth++;
         if (resource.isAnon()) {
@@ -332,21 +337,39 @@ public abstract class LabelBasedMatcher extends MatcherYAAAJena {
         }
         HashSet<LabelLanguageTuple> result = new HashSet<>();
         ExtendedIterator<AnnotationProperty> propertyIterator = ontModel.listAnnotationProperties();
-        while (propertyIterator.hasNext()) {
-            AnnotationProperty property = propertyIterator.next();
-            RDFNode n = resource.getPropertyValue(property);
-            if (n != null) {
-                if (n.isURIResource()) {
+
+        HashSet<Property> properties = new HashSet<>();
+        while(propertyIterator.hasNext()){
+            properties.add(propertyIterator.next());
+        }
+        //properties.add(ANCHOR_TEXT_PROPERTY);
+        properties.add(RDFS.label);
+        properties.add(SKOS.altLabel);
+
+        for(Property property : properties) {
+
+            StmtIterator stmtIterator = resource.listProperties(property);
+            while (stmtIterator.hasNext()) {
+                RDFNode object = stmtIterator.next().getObject();
+
+                // case of resource
+                if (object.isURIResource()) {
                     if (recursionDepth < 10) {
-                        result.addAll(getAnnotationPropertiesRecursionDeadLockSafe((OntResource) n.asResource(),
-                                ontModel, recursionDepth));
+                        try {
+                            result.addAll(getAnnotationPropertiesRecursionDeadLockSafe(object.asResource(),
+                                    ontModel, recursionDepth));
+                        } catch (Exception e){
+                            System.out.println();
+                            e.printStackTrace();
+                        }
                     } else {
-                        System.out.println("Potential Infinity Loop Detected - aborting annotation propety retrieval.");
+                        System.out.println("Potential Infinity Loop Detected - aborting annotation property retrieval.");
                         return result;
                     }
                 } else {
-                    //String s = n.toString();
-                    Literal literal = n.asLiteral();
+                    // case of value
+
+                    Literal literal = object.asLiteral();
                     String label = literal.getLexicalForm();
 
                     if (filterNonMeaningfulLabels) {
@@ -355,6 +378,7 @@ public abstract class LabelBasedMatcher extends MatcherYAAAJena {
                         }
                     } else result.add(new LabelLanguageTuple(label, literal.getLanguage()));
                 }
+
             }
         }
         return result;
@@ -412,14 +436,16 @@ public abstract class LabelBasedMatcher extends MatcherYAAAJena {
     }
 
 
+
+
     /**
      *
-     * @param iterator
-     * @param ontModel
+     * @param iterator Iterator
+     * @param ontModel Ont Model
      * @param ignoreImagesAndSkosConcept The KG track explicitly requires to remove those resources for a fair evaluation.
-     * @return
+     * @return URI Label Info instance
      */
-    UriLabelInfo getUriLabelMapAndCalculateLanguageDistributionForInstances(ResIterator iterator, OntModel ontModel, boolean ignoreImagesAndSkosConcept){
+    UriLabelInfo calculateUriLabelInfoGivenIterator(ResIterator iterator, OntModel ontModel, boolean ignoreImagesAndSkosConcept){
         UriLabelInfo result = new UriLabelInfo();
 
         nextResource:
@@ -427,12 +453,12 @@ public abstract class LabelBasedMatcher extends MatcherYAAAJena {
             Resource resource = iterator.nextResource();
             OntResource r1 = ontModel.getOntResource(resource.getURI()) ;
             if(r1 == null){
-                LOGGER.error(resource.getURI() + " is not an OntResource.");
+                //LOGGER.debug(resource.getURI() + " is not an OntResource.");
                 continue nextResource;
             }
 
             if(r1.isClass() || r1.isProperty()){
-                LOGGER.error(resource.getURI() + " is a class or property and has already been matched.");
+                // ignore classes and properties
                 continue nextResource;
             }
 
@@ -447,23 +473,64 @@ public abstract class LabelBasedMatcher extends MatcherYAAAJena {
                     }
                 }
             }
-
             HashSet<LabelLanguageTuple> labels = getAnnotationProperties(r1, ontModel);
-
-            //if(r2.getURI().equals("http://dbkwik.webdatacommons.org/stexpanded.wikia.com/resource/USS_Monitor_(NCC-61826)")){
-            //    for(LabelLanguageTuple label : labels){
-            //        System.out.println(label.label);
-            //    }
-            //    System.out.println("done");
-            //}
-
             if (labels != null && labels.size() > 0) {
-                result.add(r1.getURI(), labels);
+                result.add(resource.getURI(), labels);
             }
         }
         return result;
     }
 
+    /**
+     *
+     * @param iterator Iterator
+     * @param ontModel Ont Model
+     * @param ignoreImagesAndSkosConcept The KG track explicitly requires to remove those resources for a fair evaluation.
+     * @return URI Label Info instance
+     */
+    UriLabelInfo calculateUriLabelInfoGivenIterator(ExtendedIterator<Individual> iterator, OntModel ontModel, boolean ignoreImagesAndSkosConcept){
+        UriLabelInfo result = new UriLabelInfo();
+
+        nextResource:
+        while (iterator.hasNext()) {
+            Individual individual = iterator.next();
 
 
+            OntResource r1 = ontModel.getOntResource(individual.getURI()) ;
+            if(r1 == null){
+                //LOGGER.debug(resource.getURI() + " is not an OntResource.");
+                continue nextResource;
+            }
+
+            if(r1.isClass() || r1.isProperty()){
+                // ignore classes and properties
+                continue nextResource;
+            }
+
+            if(ignoreImagesAndSkosConcept) {
+                Iterator<Resource> typeIterator = individual.listRDFTypes(true);
+                while(typeIterator.hasNext()){
+                    String typeUri = typeIterator.next().getURI();
+                    if(typeUri.equals("http://dbkwik.webdatacommons.org/ontology/Image") ||
+                            typeUri.equals("http://www.w3.org/2004/02/skos/core#Concept")){
+                        //LOGGER.info("Skipping URI " + r1.getURI() + " due to type 'Image'.");
+                        continue nextResource;
+                    }
+                }
+            }
+            HashSet<LabelLanguageTuple> labels = getAnnotationProperties(individual, ontModel);
+            if (labels != null && labels.size() > 0) {
+                result.add(individual.getURI(), labels);
+            }
+        }
+        return result;
+    }
+
+    public boolean isFilterNonMeaningfulLabels() {
+        return filterNonMeaningfulLabels;
+    }
+
+    public void setFilterNonMeaningfulLabels(boolean filterNonMeaningfulLabels) {
+        this.filterNonMeaningfulLabels = filterNonMeaningfulLabels;
+    }
 }

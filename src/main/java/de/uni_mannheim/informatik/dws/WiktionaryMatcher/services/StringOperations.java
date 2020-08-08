@@ -1,6 +1,6 @@
 package de.uni_mannheim.informatik.dws.WiktionaryMatcher.services;
 
-import jdk.internal.org.jline.utils.Levenshtein;
+import org.simmetrics.metrics.Levenshtein;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -10,6 +10,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import java.util.stream.Collectors;
+
 
 
 /**
@@ -66,8 +67,8 @@ public class StringOperations {
     /**
      * Function which indicates whether a phrase is space separated or not.
      *
-     * @param phrase
-     * @return
+     * @param phrase Phrase to be tested.
+     * @return True if contains space, else false.
      */
     static public boolean isSpaceCase(String phrase) {
         phrase = phrase.trim();
@@ -93,7 +94,7 @@ public class StringOperations {
 
 
     /**
-     * Enum which indicates how shortcuts in camel case are handeled. Example:
+     * Enum which indicates how shortcuts in camel case are handled. Example:
      * "IsIFRSHoldingCategory"
      * <p>
      * 1) LOWER_CASE_FOLLOWS_ABBREVIATION → {"Is", "IFRSH", "olding", "Category"}

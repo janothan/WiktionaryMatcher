@@ -94,3 +94,7 @@ nb-configuration.xml
 ## Project Specific
 ##############################
 Playground.java
+oaei-resources
+EvaluationPlayground.java
+/results/*
+oaei-resources/*
