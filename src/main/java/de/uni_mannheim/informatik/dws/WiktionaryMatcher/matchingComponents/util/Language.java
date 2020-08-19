@@ -1,4 +1,4 @@
-package de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.wiktionary;
+package de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.util;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

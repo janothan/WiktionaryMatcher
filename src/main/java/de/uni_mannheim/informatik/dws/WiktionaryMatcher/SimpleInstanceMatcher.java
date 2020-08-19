@@ -1,10 +1,9 @@
 package de.uni_mannheim.informatik.dws.WiktionaryMatcher;
 
-
 import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.simpleString.DefaultNormalizationFunction;
 import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.simpleString.SimpleTransformationIndexer;
 import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.simpleString.TrimNormalizationFunction;
-import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.wiktionary.UriLabelInfo;
+import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.util.UriLabelInfo;
 import de.uni_mannheim.informatik.dws.melt.matching_eval.ResourceType;
 import de.uni_mannheim.informatik.dws.melt.yet_another_alignment_api.Alignment;
 import de.uni_mannheim.informatik.dws.melt.yet_another_alignment_api.Correspondence;

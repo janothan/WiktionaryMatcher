@@ -1,6 +1,6 @@
 package de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.wiktionary.linking;
 
-import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.wiktionary.Language;
+import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.util.Language;
 import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.wiktionary.WiktionaryKnowledgeSource;
 import de.uni_mannheim.informatik.dws.WiktionaryMatcher.services.StringOperations;
 

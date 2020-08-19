@@ -6,8 +6,6 @@ import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.simpl
 import de.uni_mannheim.informatik.dws.WiktionaryMatcher.notYetUsed.Arity;
 import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.simpleString.SimpleStringMatcher;
 import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.wiktionary.WiktionaryMatcher;
-import de.uni_mannheim.informatik.dws.WiktionaryMatcher.services.OntModelServices;
-import de.uni_mannheim.informatik.dws.melt.matching_base.DataStore;
 import de.uni_mannheim.informatik.dws.melt.yet_another_alignment_api.Alignment;
 import de.uni_mannheim.informatik.dws.melt.yet_another_alignment_api.Correspondence;
 import org.apache.jena.ontology.OntModel;

@@ -1,9 +1,11 @@
 package de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.wiktionary;
 
 import de.uni_mannheim.informatik.dws.WiktionaryMatcher.LabelBasedMatcher;
+import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.util.Language;
+import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.util.UriLabelInfo;
 import de.uni_mannheim.informatik.dws.WiktionaryMatcher.services.IOoperations;
 import de.uni_mannheim.informatik.dws.WiktionaryMatcher.services.StringOperations;
-import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.wiktionary.linking.LabelLanguageTuple;
+import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.util.LabelLanguageTuple;
 import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.wiktionary.linking.WiktionaryLinker;
 import de.uni_mannheim.informatik.dws.melt.yet_another_alignment_api.Alignment;
 import de.uni_mannheim.informatik.dws.melt.yet_another_alignment_api.Correspondence;

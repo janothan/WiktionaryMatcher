@@ -1,7 +1,5 @@
-package de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.wiktionary;
+package de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.util;
 
-
-import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.wiktionary.linking.LabelLanguageTuple;
 
 import java.util.HashMap;
 import java.util.HashSet;

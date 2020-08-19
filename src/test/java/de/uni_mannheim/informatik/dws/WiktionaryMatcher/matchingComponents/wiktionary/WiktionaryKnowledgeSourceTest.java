@@ -1,5 +1,6 @@
 package de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.wiktionary;
 
+import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.util.Language;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;

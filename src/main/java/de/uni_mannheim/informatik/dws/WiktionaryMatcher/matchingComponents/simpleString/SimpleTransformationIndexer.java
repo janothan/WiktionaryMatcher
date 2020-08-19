@@ -1,7 +1,7 @@
 package de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.simpleString;
 
-import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.wiktionary.UriLabelInfo;
-import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.wiktionary.linking.LabelLanguageTuple;
+import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.util.UriLabelInfo;
+import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.util.LabelLanguageTuple;
 
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -1,6 +1,7 @@
 package de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.wiktionary.linking;
 
-import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.wiktionary.Language;
+import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.util.LabelLanguageTuple;
+import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.util.Language;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

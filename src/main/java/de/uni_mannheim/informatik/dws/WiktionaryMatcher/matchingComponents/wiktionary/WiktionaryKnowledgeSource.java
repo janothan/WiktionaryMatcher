@@ -1,5 +1,6 @@
 package de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.wiktionary;
 
+import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.util.Language;
 import de.uni_mannheim.informatik.dws.WiktionaryMatcher.services.PersistenceService;
 import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.wiktionary.linking.LabelToConceptLinker;
 import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.wiktionary.linking.WiktionaryLinker;

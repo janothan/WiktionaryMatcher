@@ -1,10 +1,7 @@
-package de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.wiktionary.linking;
-
-
-import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.wiktionary.Language;
+package de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.util;
 
 /**
- * Datastructure to hold label together with the language.
+ * Data structure to hold label together with the language.
  */
 public class LabelLanguageTuple {
     public String label;
