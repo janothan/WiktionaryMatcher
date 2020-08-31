@@ -110,7 +110,6 @@ public class WiktionaryMatcher extends LabelBasedMatcher {
      * @param what          What is matched.
      */
     private void complexMultilingualMatch(UriLabelInfo uriLabelMap_1, UriLabelInfo uriLabelMap_2, String what) {
-
         // step 1
         LOGGER.info("Beginning full string translation matching for " + what + ".");
         performFullStringTranslationMatch(uriLabelMap_1, uriLabelMap_2);
@@ -122,7 +121,6 @@ public class WiktionaryMatcher extends LabelBasedMatcher {
             performBridgedFullStringTranslationMatch(uriLabelMap_1, uriLabelMap_2);
             LOGGER.info("Running relaxed translation matching completed.");
         }
-
     }
 
 
@@ -609,6 +607,7 @@ public class WiktionaryMatcher extends LabelBasedMatcher {
             return true;
         }
 
+
         /**
          * This method converts a URIs -> labels HashMap to a URIs -> List<nlinks>.
          * Mapped entries are ignored.
@@ -759,7 +758,6 @@ public class WiktionaryMatcher extends LabelBasedMatcher {
                         }
                     }
                 }
-
                 result.put(uri2label.getKey(), listOfTokenSequences);
             } // end of for loop over whole map
             return result;
@@ -873,7 +871,7 @@ public class WiktionaryMatcher extends LabelBasedMatcher {
          * Close all open resources.
          * The matcher cannot be run after being closed.
          */
-        void close(){
+        public void close(){
             wiktionary.close();
         }
 

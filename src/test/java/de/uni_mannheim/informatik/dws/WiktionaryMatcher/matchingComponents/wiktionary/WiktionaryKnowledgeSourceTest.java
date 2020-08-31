@@ -131,8 +131,7 @@ class WiktionaryKnowledgeSourceTest {
         assertFalse(wiktionary.isTranslationLinked("Bett", Language.GERMAN, "conference", Language.ENGLISH));
 
         // Russian/French
-        //assertTrue(wiktionary.isTranslationLinked("рецензия", Language.RUSSIAN, "critique", Language.FRENCH));
-
+        assertTrue(wiktionary.isTranslationLinked("критика", Language.RUSSIAN, "critique", Language.FRENCH));
     }
 
     /**
@@ -286,6 +285,7 @@ class WiktionaryKnowledgeSourceTest {
     @Test
     void isTranslationDerived(){
         assertTrue(wiktionary.isTranslationDerived("爸爸", Language.CHINESE, "Vater", Language.GERMAN));
+        assertTrue(wiktionary.isTranslationDerived("爸爸", Language.CHINESE, "بَابَا", Language.ARABIC));
         assertTrue(wiktionary.isTranslationDerived("Vertrag", Language.GERMAN, "smlouva", Language.CZECH));
         assertFalse(wiktionary.isTranslationDerived("Europa", Language.GERMAN, "smlouva", Language.CZECH));
         assertTrue(wiktionary.isTranslationDerived("عَقْد", Language.ARABIC, "Vertrag", Language.GERMAN));

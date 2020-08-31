@@ -71,6 +71,7 @@ public class OrchestratingMatcher extends LabelBasedMatcher {
             // wiktionary matcher
             WiktionaryMatcher wikiMatcher = new WiktionaryMatcher();
             merged = wikiMatcher.match(ontology1, ontology2, merged, properties);
+            wikiMatcher.close();
 
             // scale confidence values
             scaleConfidenceValues(merged);
@@ -89,6 +90,7 @@ public class OrchestratingMatcher extends LabelBasedMatcher {
             LOGGER.info("Different Languages detected - run matcher in multilingual mode.");
             WiktionaryMatcher wikiMatcher = new WiktionaryMatcher(true);
             Alignment result = wikiMatcher.match(ontology1, ontology2, new Alignment(), properties);
+            wikiMatcher.close();
             return scaleConfidenceValues(result);
         }
     }

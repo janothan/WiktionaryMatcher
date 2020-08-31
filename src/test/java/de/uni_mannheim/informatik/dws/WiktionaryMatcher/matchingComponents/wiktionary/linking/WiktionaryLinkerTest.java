@@ -9,16 +9,20 @@ class WiktionaryLinkerTest {
 
     @Test
     void linkToSingleConcept() {
-        WiktionaryLinker linker = new WiktionaryLinker(new WiktionaryKnowledgeSource());
+        WiktionaryKnowledgeSource wks = new WiktionaryKnowledgeSource();
+        WiktionaryLinker linker = new WiktionaryLinker(wks);
         String result = linker.linkToSingleConcept("Fallopian tube");
         assertNotNull(result);
         result = linker.linkToSingleConcept("fallopian tube");
         assertNotNull(result);
+        wks.close();
     }
 
     @Test
     void getNameOfLinker() {
-        WiktionaryLinker linker = new WiktionaryLinker(new WiktionaryKnowledgeSource());
+        WiktionaryKnowledgeSource wks = new WiktionaryKnowledgeSource();
+        WiktionaryLinker linker = new WiktionaryLinker(wks);
         assertNotNull(linker.getNameOfLinker());
+        wks.close();
     }
 }

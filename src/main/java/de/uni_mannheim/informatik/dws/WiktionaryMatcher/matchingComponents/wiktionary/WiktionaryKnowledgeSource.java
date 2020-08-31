@@ -11,44 +11,16 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
 /**
  * Class utilizing dbnary.
- * Dbnary endpoint for tests:
+ * Dbnary endpoint for tests: <a href="http://kaiko.getalp.org/about-dbnary/online-access/">Endpoint</a>
  */
 public class WiktionaryKnowledgeSource extends KnowledgeSource {
-
-
-    /**
-     * Just for tests.
-     *
-     * @param args
-     */
-    public static void main(String[] args) {
-        //WiktionaryKnowledgeSource wiktionary = new WiktionaryKnowledgeSource();
-//
-        //System.out.println("\nSynonyms:");
-        //System.out.println(wiktionary.isInDictionary("cat"));
-        //for (String s : wiktionary.getSynonyms("cat")) {
-        //    System.out.println(s);
-        //}
-//
-        //System.out.println("\nHypernyms:");
-        //for(String s : wiktionary.getHypernyms("cat")){
-        //    System.out.println(s);
-        //}
-//
-        //wiktionary.close();
-
-        WiktionaryKnowledgeSource wks = new WiktionaryKnowledgeSource();
-        for (String s : wks.getTranslation("conference", Language.ENGLISH, Language.DUTCH)) {
-            System.out.println(s);
-        }
-        wks.close();
-    }
 
     /**
      * Logger for this class.
@@ -61,11 +33,8 @@ public class WiktionaryKnowledgeSource extends KnowledgeSource {
     public String tdbDirectoryPath;
 
     /**
-     * Default TDB path to be used.
-     * TODO: change to relative once SEALS deployment is running.
+     * Where to look for the TDB database.
      */
-    //public static final String DEFAULT_TDB_DIRECTORY_PATH = "C:\\Users\\D060249\\OneDrive - SAP SE\\Documents\\PhD\\dbnary\\2019-08-02\\tdb";
-    //public static final String DEFAULT_TDB_DIRECTORY_PATH = "C:\\Users\\D060249\\OneDrive - SAP SE\\Documents\\PhD\\dbnary\\2019-08-07\\compressed\\tdb_data_set";
     public static final String DEFAULT_TDB_DIRECTORY_PATH = "./oaei-resources/wiktionary-tdb";
 
     /**
@@ -184,6 +153,7 @@ public class WiktionaryKnowledgeSource extends KnowledgeSource {
      * De-constructor; call before ending the program.
      */
     public void close() {
+        tdbDataset.end();
         tdbDataset.close();
         LOGGER.info("Dataset closed.");
     }
@@ -571,10 +541,12 @@ public class WiktionaryKnowledgeSource extends KnowledgeSource {
     public boolean isTranslationLinked(String linkedConceptToBeTranslated, Language language_1, String linkedConcept_2, Language language_2) {
 
         // developer note: the only way that works offline is ENG -> ANY_LANGUAGE - else more needs to be downloaded
+        /*
         if (!language_1.toWiktionaryChar3().equals("eng") && !language_2.toWiktionaryChar3().equals("eng")) {
             LOGGER.error("Currently only English translations are supported.");
             return false;
         }
+        */
 
         HashSet<String> translations_1 = getTranslation(linkedConceptToBeTranslated, language_1, language_2);
         for (String translated : translations_1) {
