@@ -3,12 +3,12 @@ package de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.wikt
 
 import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.util.UriLabelInfo;
 import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.util.LabelLanguageTuple;
+import de.uni_mannheim.informatik.dws.melt.matching_jena_matchers.external.wiktionary.WiktionaryKnowledgeSource;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import static de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.wiktionary.WiktionaryKnowledgeSource.normalizeForTranslations;
 
 
 /**

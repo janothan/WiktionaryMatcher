@@ -1,9 +1,13 @@
 package de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.util;
 
+import de.uni_mannheim.informatik.dws.melt.matching_jena_matchers.external.Language;
+
 /**
  * Data structure to hold label together with the language.
  */
 public class LabelLanguageTuple {
+
+
     public String label;
     public Language language;
 

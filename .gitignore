@@ -98,3 +98,5 @@ oaei-resources
 EvaluationPlayground.java
 /results/*
 oaei-resources/*
+persistences/
+*.mapdb

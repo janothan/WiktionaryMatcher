@@ -2,11 +2,11 @@ package de.uni_mannheim.informatik.dws.WiktionaryMatcher;
 
 import de.uni_mannheim.informatik.dws.WiktionaryMatcher.services.OntModelServices;
 import de.uni_mannheim.informatik.dws.WiktionaryMatcher.services.StringOperations;
-import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.util.Language;
 import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.util.UriLabelInfo;
 import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.util.LabelLanguageTuple;
 import de.uni_mannheim.informatik.dws.melt.matching_base.DataStore;
 import de.uni_mannheim.informatik.dws.melt.matching_jena.MatcherYAAAJena;
+import de.uni_mannheim.informatik.dws.melt.matching_jena_matchers.external.Language;
 import de.uni_mannheim.informatik.dws.melt.yet_another_alignment_api.Alignment;
 import org.apache.jena.ontology.AnnotationProperty;
 import org.apache.jena.ontology.Individual;

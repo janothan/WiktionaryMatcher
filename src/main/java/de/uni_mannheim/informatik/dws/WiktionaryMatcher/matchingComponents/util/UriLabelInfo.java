@@ -1,6 +1,8 @@
 package de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.util;
 
 
+import de.uni_mannheim.informatik.dws.melt.matching_jena_matchers.external.Language;
+
 import java.util.HashMap;
 import java.util.HashSet;
 
