@@ -24,8 +24,6 @@ public class AlignmentDelta {
         String pathToWorseAlignment = "/Users/janportisch/IdeaProjects/WiktionaryMatcher/results/results_2020-08-08_14-23-33/conference_conference-v1/ekaw-iasted/WiktionaryMatcher/systemAlignment.rdf";
 
         compareAlignements(pathToBetterAlignment, pathToWorseAlignment, TrackRepository.Conference.V1.getTestCase("ekaw-iasted").getParsedReferenceAlignment());
-
-
     }
 
     public static void compareAlignements(String pathToBetterAlignment, String pathToWorseAlignment, Alignment reference){

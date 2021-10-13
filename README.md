@@ -31,7 +31,6 @@ Download <a href="https://jena.apache.org/download/index.cgi">https://jena.apach
 to path.
 
 **(3) Load Data with tdbloader**
-``
 ```
 tdbloader2 --loc ./ <path to en_dbnary_ontolex.ttl.bz2> <path to pt_dbnary_ontolex.ttl.bz2> ...
 ```

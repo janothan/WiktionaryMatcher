@@ -18,6 +18,7 @@ import java.util.stream.Collectors;
  */
 public class StringOperations {
 
+
     // signal words that separate entities
     private static final HashSet<String> separatingWords = new HashSet<String>(Arrays.asList("of", "Of", "and", "And")); // further:
     // "under",
@@ -39,7 +40,7 @@ public class StringOperations {
         Matcher matcher = pattern.matcher(phrase);
         boolean containsLowerCaseLetterFollowedByUppercaseLetter = matcher.find();
 
-        if (containsLowerCaseLetterFollowedByUppercaseLetter == false) {
+        if (!containsLowerCaseLetterFollowedByUppercaseLetter) {
             // very seldom case for instance to catch abbreviations at the beginning like
             // "FXoption"
             pattern = Pattern.compile("[A-Z][A-Z][a-z]");

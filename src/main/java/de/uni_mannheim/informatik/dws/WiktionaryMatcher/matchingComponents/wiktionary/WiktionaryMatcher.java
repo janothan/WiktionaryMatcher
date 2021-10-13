@@ -65,15 +65,17 @@ public class WiktionaryMatcher extends LabelBasedMatcher {
         this(false);
     }
 
+    private static final String TDB_DIRECTORY = "./oaei-resources/tdb";
+
     /**
      * Constructor
      *
      * @param isInMultilingualMode true if the ontologies are in different languages.
      */
     public WiktionaryMatcher(boolean isInMultilingualMode) {
-        this.wiktionary = new WiktionaryKnowledgeSource();
+        this.wiktionary = new WiktionaryKnowledgeSource(TDB_DIRECTORY);
         this.linker = (WiktionaryLinker) this.wiktionary.getLinker();
-        isInMultiLingualMode = true;
+        isInMultiLingualMode = isInMultilingualMode;
     }
 
     @Override

@@ -6,6 +6,7 @@ import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.simpl
 import de.uni_mannheim.informatik.dws.WiktionaryMatcher.notYetUsed.Arity;
 import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.simpleString.SimpleStringMatcher;
 import de.uni_mannheim.informatik.dws.WiktionaryMatcher.matchingComponents.wiktionary.WiktionaryMatcher;
+import de.uni_mannheim.informatik.dws.melt.matching_jena_matchers.external.services.persistence.PersistenceService;
 import de.uni_mannheim.informatik.dws.melt.yet_another_alignment_api.Alignment;
 import de.uni_mannheim.informatik.dws.melt.yet_another_alignment_api.Correspondence;
 import org.apache.jena.ontology.OntModel;
@@ -39,6 +40,9 @@ public class OrchestratingMatcher extends LabelBasedMatcher {
     @Override
     public Alignment match(OntModel ontology1, OntModel ontology2, Alignment alignment, Properties properties) throws Exception {
         alignment = new Alignment();
+
+        // we need to make sure that the persistence service is equal to the oaei-resources directory
+        PersistenceService.getService("./oaei-resources/persistences");
 
         loadLabels(ontology1, ontology2);
         LOGGER.info("Detected Language for Source Ontology: " + mostFrequentLanguage_1);

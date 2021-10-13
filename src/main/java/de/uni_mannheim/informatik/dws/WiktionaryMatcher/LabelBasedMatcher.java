@@ -156,7 +156,6 @@ public abstract class LabelBasedMatcher extends MatcherYAAAJena {
             uri2labelMapClasses_1 = getURIlabelMapAndCalculateLanguageDistribution(ontology1.listClasses(), ontology1);
         }
 
-
         if (ont_2_key != null) {
             String key = "uri2labelMapClasses_2_" + ont_2_key;
             if (store.containsKey(key)) {
